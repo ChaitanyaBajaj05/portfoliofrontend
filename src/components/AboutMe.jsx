@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaReact, FaPython, FaNodeJs, FaHtml5, FaCss3Alt, FaDatabase, FaGithub } from "react-icons/fa";
 import { SiDjango, SiJavascript, SiPostgresql, SiFirebase, SiGoogleads, SiSanity } from "react-icons/si";
+import.meta.env.VITE_API_URL
 
 // Animation variants for staggered skills
 const skillsVariant = {

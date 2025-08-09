@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import axios from "axios";
+import.meta.env.VITE_API_URL
 
 // Remove trailing slash & add fallback for local dev
 const API_BASE =
