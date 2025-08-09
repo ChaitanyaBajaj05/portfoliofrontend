@@ -45,12 +45,6 @@ const imageVariants = {
   },
 };
 
-const getLogoUrl = (logo) => {
-  if (!logo) return "";
-  if (logo.startsWith("http") || logo.startsWith("/")) return logo;
-  return `${API_BASE}/${logo.startsWith("/") ? logo.slice(1) : logo}`;
-};
-
 export default function Certification() {
   const [certifications, setCertifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -104,7 +98,11 @@ export default function Certification() {
 
               <div className="flex items-center gap-6 relative z-10">
                 <motion.img
-                  src={getLogoUrl(cert.logo)}
+                  src={
+                    cert.logo?.startsWith("http") || cert.logo?.startsWith("/")
+                      ? cert.logo
+                      : `${API_BASE}${cert.logo}`
+                  }
                   alt={cert.organization}
                   className="w-16 h-16 object-contain rounded-lg shadow group-hover:shadow-blue-200/40 transition-all duration-300 bg-white p-2 border border-gray-200"
                   variants={imageVariants}
@@ -136,4 +134,4 @@ export default function Certification() {
       )}
     </section>
   );
-}
+} 
