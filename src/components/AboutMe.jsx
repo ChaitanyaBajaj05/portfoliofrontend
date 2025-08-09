@@ -38,7 +38,16 @@ export default function AboutMe() {
 
   useEffect(() => {
     fetch(`${API_URL}/api/about/`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Response is not JSON");
+        }
+        return res.json();
+      })
       .then(data => {
         setBio(data.bio || "Backend se data load ho raha hai...");
       })

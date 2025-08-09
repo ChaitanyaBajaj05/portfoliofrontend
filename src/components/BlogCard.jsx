@@ -19,9 +19,7 @@ export default function BlogCard({ blog }) {
   const [showComments, setShowComments] = useState(false);
 
   // ✅ Safe API base for production
-  const API_BASE =
-    import.meta.env.VITE_API_URL ||
-    "https://portfoliobackend-5mtm.onrender.com";
+  const API_BASE = import.meta.env.DEV ? "" : "https://portfoliobackend-5mtm.onrender.com";
 
   // Fetch latest blog data (likes, views, comments)
   const fetchBlogData = async () => {

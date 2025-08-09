@@ -10,9 +10,7 @@ export default function Blog() {
   const [fetchError, setFetchError] = useState("");
 
   // Always fallback to deployed backend if env var is missing
-  const API_BASE =
-    import.meta.env.VITE_API_URL ||
-    "https://portfoliobackend-5mtm.onrender.com";
+  const API_BASE = import.meta.env.DEV ? "" : "https://portfoliobackend-5mtm.onrender.com";
 
   useEffect(() => {
     axios
