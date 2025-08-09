@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-// Use env variable and strip trailing slash
-const API_BASE =
-  (import.meta.env.VITE_API_URL?.replace(/\/$/, "")) || "https://portfoliobackend-5mtm.onrender.com";
+// Use proxy in development, full URL in production
+const API_BASE = import.meta.env.DEV ? "" : "https://portfoliobackend-5mtm.onrender.com";
 
 export default function Projects() {
   const [projects, setProjects] = useState([]);

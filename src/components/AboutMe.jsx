@@ -33,8 +33,8 @@ const skills = [
 export default function AboutMe() {
   const [bio, setBio] = useState("");
 
-  // Safe API URL fallback
-  const API_URL = import.meta.env.VITE_API_URL || "https://portfoliobackend-5mtm.onrender.com";
+  // Use proxy in development, full URL in production
+  const API_URL = import.meta.env.DEV ? "" : "https://portfoliobackend-5mtm.onrender.com";
 
   useEffect(() => {
     fetch(`${API_URL}/api/about/`)
