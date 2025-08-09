@@ -32,9 +32,11 @@ const skills = [
 export default function AboutMe() {
   const [bio, setBio] = useState("");
 
+  // Safe API URL fallback
+  const API_URL = import.meta.env.VITE_API_URL || "https://portfoliobackend-5mtm.onrender.com";
+
   useEffect(() => {
-    // Backend se data fetch
-    fetch(`${import.meta.env.VITE_API_URL}/api/about/`)
+    fetch(`${API_URL}/api/about/`)
       .then(res => res.json())
       .then(data => {
         setBio(data.bio || "Backend se data load ho raha hai...");
@@ -43,7 +45,7 @@ export default function AboutMe() {
         console.error("Error fetching bio:", err);
         setBio("Backend se data load karne me problem aayi.");
       });
-  }, []);
+  }, [API_URL]);
 
   return (
     <section

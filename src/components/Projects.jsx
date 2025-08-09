@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// Use env variable and strip trailing slash
+const API_BASE =
+  (import.meta.env.VITE_API_URL?.replace(/\/$/, "")) || "http://localhost:8000";
+
 export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +17,7 @@ export default function Projects() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://localhost:8000/api/projects/${category ? `?category=${category}` : ""}`)
+      .get(`${API_BASE}/api/projects/${category ? `?category=${category}` : ""}`)
       .then((res) => {
         setProjects(res.data);
         setLoading(false);
@@ -69,7 +73,6 @@ export default function Projects() {
           {projects.map((project, i) => {
             const isGraphic = project.category === "Graphic Design";
             const isFullStack = project.category === "Full-Stack";
-            const isPython = project.category === "Python";
 
             return (
               <motion.div
@@ -85,7 +88,7 @@ export default function Projects() {
                     src={
                       project.image.startsWith("http")
                         ? project.image
-                        : `http://localhost:8000${project.image}`
+                        : `${API_BASE}${project.image}`
                     }
                     alt={project.title}
                     className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -120,7 +123,7 @@ export default function Projects() {
                         project.additional_images.map((img, idx) => (
                           <img
                             key={idx}
-                            src={img.startsWith("http") ? img : `http://localhost:8000${img}`}
+                            src={img.startsWith("http") ? img : `${API_BASE}${img}`}
                             alt={`Design ${idx + 1}`}
                             className="w-full h-28 object-cover rounded-md"
                           />
@@ -132,7 +135,7 @@ export default function Projects() {
                   ) : (
                     /* Python & Full-Stack Projects */
                     <div className="mt-auto flex gap-4">
-                      {/* Code Button (Available for Python & Full-Stack) */}
+                      {/* Code Button */}
                       {project.github_link && (
                         <a
                           href={project.github_link}
@@ -144,7 +147,7 @@ export default function Projects() {
                         </a>
                       )}
 
-                      {/* Live Button (Only for Full-Stack) */}
+                      {/* Live Button */}
                       {isFullStack && (
                         <button
                           onClick={() =>

@@ -9,8 +9,10 @@ export default function Blog() {
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState("");
 
-  // Get API base URL from environment variables
-  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+  // Always fallback to deployed backend if env var is missing
+  const API_BASE =
+    import.meta.env.VITE_API_URL ||
+    "https://portfoliobackend-5mtm.onrender.com";
 
   useEffect(() => {
     axios
@@ -43,7 +45,8 @@ export default function Blog() {
           Insights & Stories
         </h2>
         <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
-          Fresh perspectives, code journeys, and everything I’m learning as a developer.
+          Fresh perspectives, code journeys, and everything I’m learning as a
+          developer.
         </p>
       </motion.div>
 
@@ -54,7 +57,9 @@ export default function Blog() {
       ) : fetchError ? (
         <div className="text-center text-red-400">{fetchError}</div>
       ) : blogs.length === 0 ? (
-        <div className="text-center text-gray-400">No blogs available yet.</div>
+        <div className="text-center text-gray-400">
+          No blogs available yet.
+        </div>
       ) : (
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
@@ -62,7 +67,10 @@ export default function Blog() {
           animate="visible"
           variants={{
             hidden: { opacity: 0 },
-            visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.3 } },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.2, delayChildren: 0.3 },
+            },
           }}
         >
           {blogs.map((blog) => (

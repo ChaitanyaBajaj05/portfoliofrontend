@@ -3,7 +3,9 @@ import { motion } from "framer-motion";
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL;
+// Remove trailing slash & add fallback for local dev
+const API_BASE =
+  (import.meta.env.VITE_API_URL?.replace(/\/$/, "")) || "http://localhost:8000";
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -22,7 +24,7 @@ export default function Contact() {
       return;
     }
     try {
-      await axios.post(`${API_URL}/api/messages/`, formData);
+      await axios.post(`${API_BASE}/api/messages/`, formData);
       setSubmitted(true);
       setFormData({ name: "", email: "", message: "" });
     } catch (err) {

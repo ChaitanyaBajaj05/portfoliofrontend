@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { FaExternalLinkAlt, FaHeart, FaRegHeart, FaShareAlt, FaComment, FaEye } from "react-icons/fa";
+import {
+  FaExternalLinkAlt,
+  FaHeart,
+  FaRegHeart,
+  FaShareAlt,
+  FaComment,
+  FaEye
+} from "react-icons/fa";
 import axios from "axios";
 import { motion } from "framer-motion";
 
@@ -11,8 +18,10 @@ export default function BlogCard({ blog }) {
   const [commentText, setCommentText] = useState("");
   const [showComments, setShowComments] = useState(false);
 
-  // Get API base URL from environment variables
-  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+  // ✅ Safe API base for production
+  const API_BASE =
+    import.meta.env.VITE_API_URL ||
+    "https://portfoliobackend-5mtm.onrender.com";
 
   // Fetch latest blog data (likes, views, comments)
   const fetchBlogData = async () => {
@@ -32,10 +41,9 @@ export default function BlogCard({ blog }) {
     // Register view
     axios
       .post(`${API_BASE}/api/blogs/${blog.id}/view/`, {
-        ip_address: "127.0.0.1" // Replace with actual IP logic if needed
+        ip_address: "127.0.0.1" // TODO: Replace with actual IP logic if needed
       })
       .catch(() => {});
-    // eslint-disable-next-line
   }, [blog.id, API_BASE]);
 
   // Like handler
@@ -73,7 +81,9 @@ export default function BlogCard({ blog }) {
 
   // Share handler
   const handleShare = () => {
-    navigator.clipboard.writeText(`${window.location.origin}/blog/${blog.id}`);
+    navigator.clipboard.writeText(
+      `${window.location.origin}/blog/${blog.id}`
+    );
     alert("Blog link copied to clipboard!");
   };
 
@@ -82,7 +92,10 @@ export default function BlogCard({ blog }) {
       className="relative bg-gradient-to-br from-purple-900/70 via-indigo-900/70 to-blue-900/70 rounded-3xl shadow-2xl flex flex-col transition-transform transform hover:scale-105 hover:shadow-4xl hover:brightness-110"
       initial={{ opacity: 0, y: 40, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      whileHover={{ scale: 1.05, boxShadow: "0 15px 30px rgba(99, 102, 241, 0.5)" }}
+      whileHover={{
+        scale: 1.05,
+        boxShadow: "0 15px 30px rgba(99, 102, 241, 0.5)"
+      }}
       transition={{ type: "spring", stiffness: 150, damping: 20 }}
     >
       <div className="relative w-full h-48 overflow-hidden rounded-t-3xl">
@@ -97,15 +110,21 @@ export default function BlogCard({ blog }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-t-3xl" />
       </div>
-      
+
       <div className="flex-1 flex flex-col p-6 z-20">
-        <h3 className="text-3xl font-extrabold mb-3 text-white truncate" title={blog.title}>
+        <h3
+          className="text-3xl font-extrabold mb-3 text-white truncate"
+          title={blog.title}
+        >
           {blog.title}
         </h3>
-        <p className="text-gray-300 mb-4 line-clamp-4" title={blog.description}>
+        <p
+          className="text-gray-300 mb-4 line-clamp-4"
+          title={blog.description}
+        >
           {blog.description}
         </p>
-        
+
         <div className="flex items-center justify-between text-xs text-gray-400 mb-4">
           <span>
             {new Date(blog.published_at).toLocaleDateString("en-US", {
@@ -165,7 +184,7 @@ export default function BlogCard({ blog }) {
               <input
                 type="text"
                 value={commentText}
-                onChange={e => setCommentText(e.target.value)}
+                onChange={(e) => setCommentText(e.target.value)}
                 placeholder="Add a comment..."
                 className="flex-1 p-2 rounded-md bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 required
@@ -182,8 +201,13 @@ export default function BlogCard({ blog }) {
               <p className="text-gray-400 text-sm">No comments yet.</p>
             ) : (
               comments.map((c, idx) => (
-                <div key={idx} className="mb-3 border-b border-white/20 pb-2">
-                  <p className="text-sm text-purple-300 font-semibold">{c.name}:</p>
+                <div
+                  key={idx}
+                  className="mb-3 border-b border-white/20 pb-2"
+                >
+                  <p className="text-sm text-purple-300 font-semibold">
+                    {c.name}:
+                  </p>
                   <p className="text-gray-300 text-sm">{c.text}</p>
                 </div>
               ))

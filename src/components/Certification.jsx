@@ -3,7 +3,8 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { FaCertificate } from "react-icons/fa";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_BASE =
+  (import.meta.env.VITE_API_URL?.replace(/\/$/, "")) || "http://localhost:8000";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -15,21 +16,17 @@ const containerVariants = {
       type: "spring",
       stiffness: 120,
       damping: 16,
-    }
-  }
+    },
+  },
 };
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40, scale: 0.97 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
+  visible: {
+    opacity: 1,
+    y: 0,
     scale: 1,
-    transition: { 
-      type: "spring", 
-      stiffness: 120, 
-      damping: 15 
-    }
+    transition: { type: "spring", stiffness: 120, damping: 15 },
   },
   hover: {
     scale: 1.025,
@@ -37,19 +34,15 @@ const cardVariants = {
     background: "rgba(255,255,255,0.92)",
     borderColor: "#c7d2fe",
     transition: { type: "spring", stiffness: 200, damping: 14 },
-  }
+  },
 };
 
 const imageVariants = {
   hover: {
     rotate: [0, 6, -6, 0],
     scale: 1.08,
-    transition: {
-      duration: 0.9,
-      repeat: Infinity,
-      repeatType: "mirror"
-    }
-  }
+    transition: { duration: 0.9, repeat: Infinity, repeatType: "mirror" },
+  },
 };
 
 export default function Certification() {
@@ -57,8 +50,9 @@ export default function Certification() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${API_URL}/api/certifications/`)
-      .then(res => {
+    axios
+      .get(`${API_BASE}/api/certifications/`)
+      .then((res) => {
         setCertifications(res.data);
         setLoading(false);
       })
@@ -66,10 +60,7 @@ export default function Certification() {
   }, []);
 
   return (
-    <section
-      id="certifications"
-      className="py-20 max-w-6xl mx-auto px-4"
-    >
+    <section id="certifications" className="py-20 max-w-6xl mx-auto px-4">
       <motion.h2
         className="text-3xl md:text-4xl font-extrabold mb-16 text-center bg-gradient-to-r from-purple-400 via-blue-400 to-blue-600 bg-clip-text text-transparent drop-shadow"
         initial={{ opacity: 0, y: 30 }}
@@ -104,13 +95,13 @@ export default function Certification() {
               whileTap={{ scale: 0.98 }}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-200/20 via-blue-100/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0" />
-              
+
               <div className="flex items-center gap-6 relative z-10">
                 <motion.img
                   src={
-                    cert.logo.startsWith("http")
+                    cert.logo?.startsWith("http")
                       ? cert.logo
-                      : `${API_URL}${cert.logo}`
+                      : `${API_BASE}${cert.logo}`
                   }
                   alt={cert.organization}
                   className="w-16 h-16 object-contain rounded-lg shadow group-hover:shadow-blue-200/40 transition-all duration-300 bg-white p-2 border border-gray-200"
@@ -124,9 +115,10 @@ export default function Certification() {
                     {cert.organization}
                   </p>
                   <p className="text-xs text-gray-400">
-                    Issued: {new Date(cert.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long'
+                    Issued:{" "}
+                    {new Date(cert.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
                     })}
                   </p>
                 </div>
