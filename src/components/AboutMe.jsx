@@ -31,31 +31,7 @@ const skills = [
 ];
 
 export default function AboutMe() {
-  const [bio, setBio] = useState("");
-
-  // Use proxy in development, full URL in production
-  const API_URL = import.meta.env.DEV ? "" : "https://portfoliobackend-5mtm.onrender.com";
-
-  useEffect(() => {
-    fetch(`${API_URL}/api/about/`)
-      .then(res => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        const contentType = res.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          throw new Error("Response is not JSON");
-        }
-        return res.json();
-      })
-      .then(data => {
-        setBio(data.bio || "Backend se data load ho raha hai...");
-      })
-      .catch(err => {
-        console.error("Error fetching bio:", err);
-        setBio("Backend se data load karne me problem aayi.");
-      });
-  }, [API_URL]);
+  const bio = "I'm a passionate full-stack developer with expertise in modern web technologies. I love creating efficient, scalable applications and solving complex problems through code. With experience in both frontend and backend development, I enjoy building complete solutions from concept to deployment.";
 
   return (
     <section
@@ -90,7 +66,7 @@ export default function AboutMe() {
           About Me
         </motion.h2>
 
-        {/* Bio from backend */}
+        {/* Bio content */}
         <motion.p
           className="text-lg text-gray-200 mb-4"
           initial={{ opacity: 0, y: 20 }}
