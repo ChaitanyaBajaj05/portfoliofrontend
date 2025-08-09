@@ -7,12 +7,6 @@ import axios from "axios";
 // Use proxy in development, full URL in production
 const API_BASE = import.meta.env.DEV ? "" : "https://portfoliobackend-5mtm.onrender.com";
 
-const getImageUrl = (url) => {
-  if (!url) return "";
-  if (url.startsWith("http") || url.startsWith("/")) return url;
-  return `${API_BASE}/${url.startsWith("/") ? url.slice(1) : url}`;
-};
-
 export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -90,7 +84,11 @@ export default function Projects() {
                 {/* Project Image */}
                 <div className="relative h-44 overflow-hidden">
                   <img
-                    src={getImageUrl(project.image)}
+                    src={
+                      project.image.startsWith("http")
+                        ? project.image
+                        : `${API_BASE}${project.image}`
+                    }
                     alt={project.title}
                     className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
@@ -124,7 +122,7 @@ export default function Projects() {
                         project.additional_images.map((img, idx) => (
                           <img
                             key={idx}
-                            src={getImageUrl(img)}
+                            src={img.startsWith("http") ? img : `${API_BASE}${img}`}
                             alt={`Design ${idx + 1}`}
                             className="w-full h-28 object-cover rounded-md"
                           />
@@ -171,4 +169,4 @@ export default function Projects() {
       )}
     </section>
   );
-}
+} update to this also
