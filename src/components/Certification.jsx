@@ -99,7 +99,7 @@ export default function Certification() {
               <div className="flex items-center gap-6 relative z-10">
                 <motion.img
                   src={
-                    cert.logo?.startsWith("http")
+                    cert.logo?.startsWith("http") || cert.logo?.startsWith("/")
                       ? cert.logo
                       : `${API_BASE}${cert.logo}`
                   }
