@@ -4,7 +4,7 @@ import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import axios from "axios";
 // Remove trailing slash & add fallback for local dev
 const API_BASE =
-  (import.meta.env.VITE_API_URL?.replace(/\/$/, "")) || "http://localhost:8000";
+  (import.meta.env.VITE_API_URL?.replace(/\/$/, "")) || "https://portfoliobackend-5mtm.onrender.com";
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
