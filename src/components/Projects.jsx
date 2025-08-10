@@ -183,4 +183,4 @@ export default function Projects() {
       )}
     </section>
   );
-} update to this also
+}
