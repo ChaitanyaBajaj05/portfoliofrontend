@@ -99,13 +99,18 @@ export default function Certification() {
               <div className="flex items-center gap-6 relative z-10">
                 <motion.img
                   src={
-                    cert.logo?.startsWith("http") || cert.logo?.startsWith("/")
+                    cert.logo?.startsWith("http")
                       ? cert.logo
-                      : `${API_BASE}${cert.logo}`
+                      : cert.logo?.startsWith("/")
+                      ? `${API_BASE}${cert.logo}`
+                      : `${API_BASE}/media/${cert.logo}`
                   }
                   alt={cert.organization}
                   className="w-16 h-16 object-contain rounded-lg shadow group-hover:shadow-blue-200/40 transition-all duration-300 bg-white p-2 border border-gray-200"
                   variants={imageVariants}
+                  onError={(e) => {
+                    e.target.src = "https://images.pexels.com/photos/267507/pexels-photo-267507.jpeg?auto=compress&cs=tinysrgb&w=100";
+                  }}
                 />
                 <div className="flex-1">
                   <h3 className="text-lg font-bold text-gray-900 mb-1.5 group-hover:text-blue-700 transition-colors">

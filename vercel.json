@@ -2,21 +2,25 @@
   "version": 2,
   "builds": [
     {
-      "src": "wsgi.py",
-      "use": "@vercel/python",
+      "src": "package.json",
+      "use": "@vercel/static-build",
       "config": {
-        "runtime": "python3.11"
+        "distDir": "dist"
       }
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/.*\\.(js|css|png|jpg|jpeg|svg|ico|json|woff2?|pdf)$",
+      "dest": "/$0"
     },
     {
       "src": "/(.*)",
-      "dest": "wsgi.py"
+      "dest": "/index.html"
     }
   ]
 }
