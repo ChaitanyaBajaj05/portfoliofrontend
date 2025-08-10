@@ -99,12 +99,17 @@ export default function BlogCard({ blog }) {
       <div className="relative w-full h-48 overflow-hidden rounded-t-3xl">
         <img
           src={
-            blog.cover_image.startsWith("http")
+            blog.cover_image?.startsWith("http")
               ? blog.cover_image
-              : `${API_BASE}${blog.cover_image}`
+              : blog.cover_image?.startsWith("/")
+              ? `${API_BASE}${blog.cover_image}`
+              : `${API_BASE}/media/${blog.cover_image}`
           }
           alt={blog.title}
           className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+          onError={(e) => {
+            e.target.src = "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=800";
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-t-3xl" />
       </div>

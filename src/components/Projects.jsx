@@ -85,12 +85,17 @@ export default function Projects() {
                 <div className="relative h-44 overflow-hidden">
                   <img
                     src={
-                      project.image.startsWith("http")
+                      project.image?.startsWith("http")
                         ? project.image
-                        : `${API_BASE}${project.image}`
+                        : project.image?.startsWith("/")
+                        ? `${API_BASE}${project.image}`
+                        : `${API_BASE}/media/${project.image}`
                     }
                     alt={project.title}
                     className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      e.target.src = "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=800";
+                    }}
                   />
                 </div>
 
@@ -122,9 +127,18 @@ export default function Projects() {
                         project.additional_images.map((img, idx) => (
                           <img
                             key={idx}
-                            src={img.startsWith("http") ? img : `${API_BASE}${img}`}
+                            src={
+                              img?.startsWith("http")
+                                ? img
+                                : img?.startsWith("/")
+                                ? `${API_BASE}${img}`
+                                : `${API_BASE}/media/${img}`
+                            }
                             alt={`Design ${idx + 1}`}
                             className="w-full h-28 object-cover rounded-md"
+                            onError={(e) => {
+                              e.target.src = "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=400";
+                            }}
                           />
                         ))
                       ) : (
