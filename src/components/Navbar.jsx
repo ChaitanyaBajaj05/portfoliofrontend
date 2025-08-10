@@ -26,59 +26,68 @@ export default function Navbar() {
   return (
     <div className="overflow-x-hidden w-full">
       {/* Desktop Navbar */}
-      <nav className="w-full fixed top-0 left-0 z-50 bg-white/5 backdrop-blur-xl shadow-lg hidden md:block">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <nav className="hidden md:block fixed top-0 left-0 w-full z-50 bg-white/10 backdrop-blur-lg shadow-lg border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
           {/* Logo */}
           <motion.a
             href="/"
-            className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent"
+            className="text-2xl font-extrabold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent tracking-wide"
             whileHover={{ scale: 1.05 }}
           >
             CB
           </motion.a>
 
           {/* Links */}
-          <div className="flex items-center gap-8">
-            <ul className="flex gap-8 text-lg font-medium">
-              {navLinks.map((link) => (
-                <motion.li key={link.name} whileHover={{ scale: 1.05 }}>
-                  <a
-                    href={link.href}
-                    className="text-gray-300 hover:text-purple-400 transition-colors duration-200"
-                  >
-                    {link.name}
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
+          <ul className="flex gap-8 text-lg font-medium">
+            {navLinks.map((link) => (
+              <motion.li key={link.name} whileHover={{ scale: 1.05 }}>
+                <a
+                  href={link.href}
+                  onClick={() => setActive(link.name)}
+                  className={`relative transition-colors duration-300 ${
+                    active === link.name
+                      ? "text-purple-400"
+                      : "text-gray-300 hover:text-purple-300"
+                  }`}
+                >
+                  {link.name}
+                  {active === link.name && (
+                    <motion.span
+                      layoutId="underline"
+                      className="absolute left-0 -bottom-1 h-[2px] w-full bg-gradient-to-r from-purple-400 to-blue-400 rounded-full"
+                    />
+                  )}
+                </a>
+              </motion.li>
+            ))}
+          </ul>
 
-            {/* Socials */}
-            <div className="flex gap-6 ml-4">
-              <motion.a
-                href="https://github.com/ChaitanyaBajaj05"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -2 }}
-                className="text-gray-400 hover:text-purple-400"
-              >
-                <FaGithub size={24} />
-              </motion.a>
-              <motion.a
-                href="https://linkedin.com/in/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -2 }}
-                className="text-gray-400 hover:text-blue-400"
-              >
-                <FaLinkedin size={24} />
-              </motion.a>
-            </div>
+          {/* Socials */}
+          <div className="flex gap-6 ml-4">
+            <motion.a
+              href="https://github.com/ChaitanyaBajaj05"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -2 }}
+              className="text-gray-400 hover:text-purple-400 transition-colors"
+            >
+              <FaGithub size={22} />
+            </motion.a>
+            <motion.a
+              href="https://linkedin.com/in/yourusername"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -2 }}
+              className="text-gray-400 hover:text-blue-400 transition-colors"
+            >
+              <FaLinkedin size={22} />
+            </motion.a>
           </div>
         </div>
       </nav>
 
       {/* Mobile Top Bar */}
-      <nav className="md:hidden fixed top-0 w-full z-50 bg-gray-900/90 backdrop-blur-lg border-b border-gray-800">
+      <nav className="md:hidden fixed top-0 w-full z-50 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800">
         <div className="flex justify-center items-center px-6 py-4">
           <motion.a
             href="/"
@@ -91,21 +100,21 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 w-full z-50 bg-gray-900/90 backdrop-blur-lg border-t border-gray-800">
+      <nav className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-md rounded-2xl bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-lg">
         <div className="flex justify-around items-center h-16 px-4">
           {navLinks.map((item) => (
             <motion.a
               key={item.name}
               href={item.href}
               onClick={() => setActive(item.name)}
-              className="relative flex flex-col items-center justify-center p-2"
+              className="relative flex flex-col items-center justify-center gap-1 p-2"
               whileTap={{ scale: 0.95 }}
             >
               <AnimatePresence>
                 {active === item.name && (
                   <motion.span
-                    layoutId="mobileNav"
-                    className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-full"
+                    layoutId="mobileNavHighlight"
+                    className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-xl"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -115,15 +124,20 @@ export default function Navbar() {
               </AnimatePresence>
 
               <motion.span
-                className={`text-2xl ${
-                  active === item.name
-                    ? "text-purple-400"
-                    : "text-gray-400"
+                className={`text-xl ${
+                  active === item.name ? "text-purple-400" : "text-gray-400"
                 }`}
                 whileHover={{ scale: 1.1 }}
               >
                 {item.icon}
               </motion.span>
+              <span
+                className={`text-xs ${
+                  active === item.name ? "text-purple-300" : "text-gray-500"
+                }`}
+              >
+                {item.name}
+              </span>
             </motion.a>
           ))}
         </div>
