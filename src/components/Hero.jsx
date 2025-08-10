@@ -1,22 +1,21 @@
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaArrowDown, FaDownload } from "react-icons/fa";
 
 export default function Hero() {
-  // Direct path to resume file in public folder
   const resumeUrl = "/chaitanyabajajspecialized.pdf";
 
   return (
     <section
       id="home"
       className="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden px-4 sm:px-8"
+      style={{ overflowX: "hidden" }}
     >
       {/* Animated Gradient Background */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5 }}
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 overflow-hidden"
         style={{
           background: `
             radial-gradient(circle at 70% 30%, 
@@ -92,9 +91,9 @@ export default function Hero() {
                 href="https://github.com/chaitanyabajaj05"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-block"
+                className="group relative inline-block overflow-hidden rounded-full"
               >
-                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full blur opacity-75 group-hover:opacity-100 transition-all duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full blur opacity-75 group-hover:opacity-100 transition-all duration-300"></div>
                 <span className="relative inline-flex items-center justify-center w-14 h-14 rounded-full bg-gray-900 hover:bg-gray-800 transition-all">
                   <FaGithub className="w-8 h-8 text-purple-400 group-hover:text-white transition-colors" />
                 </span>
@@ -105,9 +104,9 @@ export default function Hero() {
                 href="https://linkedin.com/in/chaitanyabajajfsd"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-block"
+                className="group relative inline-block overflow-hidden rounded-full"
               >
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full blur opacity-75 group-hover:opacity-100 transition-all duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full blur opacity-75 group-hover:opacity-100 transition-all duration-300"></div>
                 <span className="relative inline-flex items-center justify-center w-14 h-14 rounded-full bg-gray-900 hover:bg-gray-800 transition-all">
                   <FaLinkedin className="w-8 h-8 text-blue-400 group-hover:text-white transition-colors" />
                 </span>
