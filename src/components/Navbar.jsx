@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import {
   FaGithub,
   FaLinkedin,
@@ -11,17 +11,60 @@ import {
 } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
+const navLinks = [
+  { name: "Home", href: "#home", icon: FaHome },
+  { name: "About", href: "#about", icon: FaUser },
+  { name: "Certifications", href: "#certifications", icon: FaCertificate },
+  { name: "Projects", href: "#projects", icon: FaFolderOpen },
+  { name: "Blogs", href: "/blog", icon: FaBlog },
+  { name: "Contact", href: "#contact", icon: FaEnvelope },
+];
+
+const socialLinks = [
+  { href: "https://github.com/ChaitanyaBajaj05", icon: FaGithub, color: "hover:text-purple-400" },
+  { href: "https://linkedin.com/in/yourusername", icon: FaLinkedin, color: "hover:text-blue-400" },
+];
+
+// Memoized Nav Item
+const NavItem = memo(({ link, active, setActive }) => {
+  const Icon = link.icon;
+  return (
+    <motion.a
+      href={link.href}
+      onClick={() => setActive(link.name)}
+      className="relative flex flex-col items-center justify-center gap-1 p-2"
+      whileTap={{ scale: 0.95 }}
+    >
+      <AnimatePresence>
+        {active === link.name && (
+          <motion.span
+            layoutId="navHighlight"
+            className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-xl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          />
+        )}
+      </AnimatePresence>
+      <Icon
+        className={`text-xl transition-transform duration-300 ${
+          active === link.name ? "text-purple-400 scale-110" : "text-gray-400 group-hover:scale-110"
+        }`}
+      />
+      <span
+        className={`text-xs ${
+          active === link.name ? "text-purple-300" : "text-gray-500"
+        }`}
+      >
+        {link.name}
+      </span>
+    </motion.a>
+  );
+});
+
 export default function Navbar() {
   const [active, setActive] = useState("Home");
-
-  const navLinks = [
-    { name: "Home", href: "#home", icon: <FaHome /> },
-    { name: "About", href: "#about", icon: <FaUser /> },
-    { name: "Certifications", href: "#certifications", icon: <FaCertificate /> },
-    { name: "Projects", href: "#projects", icon: <FaFolderOpen /> },
-    { name: "Blogs", href: "/blog", icon: <FaBlog /> },
-    { name: "Contact", href: "#contact", icon: <FaEnvelope /> },
-  ];
 
   return (
     <div className="overflow-x-hidden w-full">
@@ -64,24 +107,18 @@ export default function Navbar() {
 
           {/* Socials */}
           <div className="flex gap-6 ml-4">
-            <motion.a
-              href="https://github.com/ChaitanyaBajaj05"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ y: -2 }}
-              className="text-gray-400 hover:text-purple-400 transition-colors"
-            >
-              <FaGithub size={22} />
-            </motion.a>
-            <motion.a
-              href="https://linkedin.com/in/yourusername"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ y: -2 }}
-              className="text-gray-400 hover:text-blue-400 transition-colors"
-            >
-              <FaLinkedin size={22} />
-            </motion.a>
+            {socialLinks.map(({ href, icon: Icon, color }) => (
+              <motion.a
+                key={href}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -2 }}
+                className={`text-gray-400 ${color} transition-colors`}
+              >
+                <Icon size={22} />
+              </motion.a>
+            ))}
           </div>
         </div>
       </nav>
@@ -102,43 +139,8 @@ export default function Navbar() {
       {/* Mobile Bottom Navigation */}
       <nav className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-md rounded-2xl bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-lg">
         <div className="flex justify-around items-center h-16 px-4">
-          {navLinks.map((item) => (
-            <motion.a
-              key={item.name}
-              href={item.href}
-              onClick={() => setActive(item.name)}
-              className="relative flex flex-col items-center justify-center gap-1 p-2"
-              whileTap={{ scale: 0.95 }}
-            >
-              <AnimatePresence>
-                {active === item.name && (
-                  <motion.span
-                    layoutId="mobileNavHighlight"
-                    className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-xl"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  />
-                )}
-              </AnimatePresence>
-
-              <motion.span
-                className={`text-xl ${
-                  active === item.name ? "text-purple-400" : "text-gray-400"
-                }`}
-                whileHover={{ scale: 1.1 }}
-              >
-                {item.icon}
-              </motion.span>
-              <span
-                className={`text-xs ${
-                  active === item.name ? "text-purple-300" : "text-gray-500"
-                }`}
-              >
-                {item.name}
-              </span>
-            </motion.a>
+          {navLinks.map((link) => (
+            <NavItem key={link.name} link={link} active={active} setActive={setActive} />
           ))}
         </div>
       </nav>
