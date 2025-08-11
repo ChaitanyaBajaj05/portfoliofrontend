@@ -137,7 +137,27 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-md rounded-2xl bg-gray-900/80 backdrop-blur-xl border border-gray-700 shadow-lg">
+      <nav
+        className="
+          md:hidden
+          fixed
+          left-1/2
+          -translate-x-1/2
+          z-50
+          w-[95%]
+          max-w-md
+          rounded-2xl
+          bg-gray-900/80
+          backdrop-blur-xl
+          border
+          border-gray-700
+          shadow-lg
+          pb-[env(safe-area-inset-bottom)]
+        "
+        style={{
+          bottom: "calc(env(safe-area-inset-bottom) + 1rem)"
+        }}
+      >
         <div className="flex justify-around items-center h-16 px-4">
           {navLinks.map((link) => (
             <NavItem key={link.name} link={link} active={active} setActive={setActive} />

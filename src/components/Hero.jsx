@@ -1,8 +1,22 @@
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaArrowDown, FaDownload } from "react-icons/fa";
+import { useEffect, useState } from "react";
 
 export default function Hero() {
   const resumeUrl = "/chaitanyabajajspecialized.pdf";
+  const [typedText, setTypedText] = useState("");
+  const fullText = "Crafting digital experiences with React and Django";
+
+  // Typewriter effect
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setTypedText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) clearInterval(interval);
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section
@@ -10,10 +24,10 @@ export default function Hero() {
       className="relative min-h-screen flex flex-col justify-center items-center text-center px-4 sm:px-8 
       bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#0f172a] overflow-hidden"
     >
-      {/* Multi-layer Background Glow */}
+      {/* Animated Background Glow */}
       <BackgroundGlow color="bg-purple-500/20" size={500} duration={18} position="top-left" />
-      <BackgroundGlow color="bg-blue-500/20" size={400} duration={22} position="bottom-right" />
-      <BackgroundGlow color="bg-pink-500/10" size={300} duration={25} position="top-right" />
+      <BackgroundGlow color="bg-blue-500/20" size={420} duration={22} position="bottom-right" />
+      <BackgroundGlow color="bg-pink-500/15" size={320} duration={25} position="top-right" />
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl w-full">
@@ -29,7 +43,7 @@ export default function Hero() {
         <motion.h1
           className="text-4xl sm:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r 
           from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent 
-          drop-shadow-[0_0_20px_rgba(168,85,247,0.4)]"
+          drop-shadow-[0_0_25px_rgba(168,85,247,0.4)]"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
@@ -38,14 +52,19 @@ export default function Hero() {
         </motion.h1>
 
         <motion.p
-          className="mt-6 text-lg sm:text-2xl text-gray-300 leading-relaxed max-w-2xl mx-auto"
+          className="mt-6 text-lg sm:text-2xl text-gray-300 leading-relaxed max-w-2xl mx-auto min-h-[2.5rem]"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
         >
-          Crafting digital experiences with{" "}
-          <span className="text-purple-400 font-semibold">React</span> and{" "}
-          <span className="text-blue-400 font-semibold">Django</span>
+          {typedText}
+          <motion.span
+            animate={{ opacity: [0, 1, 0] }}
+            transition={{ duration: 0.8, repeat: Infinity }}
+            className="text-purple-400"
+          >
+            |
+          </motion.span>
         </motion.p>
 
         {/* Social & Resume Buttons */}
@@ -65,8 +84,6 @@ export default function Hero() {
             icon={<FaLinkedin className="w-7 h-7" />}
             color="from-blue-500 to-cyan-500"
           />
-
-          {/* Resume Button */}
           <motion.a
             href={resumeUrl}
             download
@@ -88,9 +105,13 @@ export default function Hero() {
         animate={{ y: [0, 8, 0] }}
         transition={{ repeat: Infinity, duration: 1.5 }}
       >
-        <div className="w-11 h-11 rounded-full border-2 border-purple-400 flex items-center justify-center animate-pulse">
+        <motion.div
+          className="w-12 h-12 rounded-full border-2 border-purple-400 flex items-center justify-center shadow-lg shadow-purple-500/30"
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ repeat: Infinity, duration: 1.5 }}
+        >
           <FaArrowDown className="w-5 h-5 text-purple-400" />
-        </div>
+        </motion.div>
         <span className="text-sm text-gray-400 mt-2 tracking-wider">
           Scroll to explore
         </span>
