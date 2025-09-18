@@ -25,36 +25,41 @@ const socialLinks = [
   { href: "https://linkedin.com/in/yourusername", icon: FaLinkedin, color: "hover:text-blue-400" },
 ];
 
-// Memoized Nav Item
+// Memoized Nav Item for Mobile
 const NavItem = memo(({ link, active, setActive }) => {
   const Icon = link.icon;
   return (
     <motion.a
       href={link.href}
       onClick={() => setActive(link.name)}
-      className="relative flex flex-col items-center justify-center gap-1 p-2"
+      className="relative flex flex-col items-center justify-center gap-1 p-2 w-14 group"
       whileTap={{ scale: 0.95 }}
     >
       <AnimatePresence>
         {active === link.name && (
           <motion.span
-            layoutId="navHighlight"
-            className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            layoutId="activeBubble"
+            className="absolute -top-2 w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/40 to-blue-500/40 shadow-lg shadow-purple-500/50"
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.6 }}
+            transition={{ duration: 0.3, type: "spring", stiffness: 300 }}
           />
         )}
       </AnimatePresence>
+
       <Icon
-        className={`text-xl transition-transform duration-300 ${
-          active === link.name ? "text-purple-400 scale-110" : "text-gray-400 group-hover:scale-110"
+        className={`text-2xl transition-transform duration-300 ${
+          active === link.name
+            ? "text-white scale-125 drop-shadow-lg"
+            : "text-gray-400 group-hover:scale-110"
         }`}
       />
       <span
-        className={`text-xs ${
-          active === link.name ? "text-purple-300" : "text-gray-500"
+        className={`text-xs transition-all duration-300 ${
+          active === link.name
+            ? "text-white font-semibold"
+            : "text-gray-400"
         }`}
       >
         {link.name}
@@ -146,22 +151,28 @@ export default function Navbar() {
           z-50
           w-[95%]
           max-w-md
-          rounded-2xl
-          bg-gray-900/80
+          rounded-3xl
+          bg-gray-900/90
           backdrop-blur-xl
           border
           border-gray-700
-          shadow-lg
+          shadow-2xl
           pb-[env(safe-area-inset-bottom)]
+          transition-all
         "
-        style={{
-          bottom: "calc(env(safe-area-inset-bottom) + 1rem)"
-        }}
+        style={{ bottom: "calc(env(safe-area-inset-bottom) + 1rem)" }}
       >
-        <div className="flex justify-around items-center h-16 px-4">
+        <div className="flex justify-around items-center h-20 px-4 relative">
           {navLinks.map((link) => (
             <NavItem key={link.name} link={link} active={active} setActive={setActive} />
           ))}
+
+          {/* Optional Animated Glow behind entire navbar */}
+          <motion.div
+            className="absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-pink-500/10 pointer-events-none"
+            animate={{ opacity: [0.2, 0.35, 0.2] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          />
         </div>
       </nav>
     </div>

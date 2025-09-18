@@ -8,7 +8,9 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination, Autoplay } from "swiper/modules";
 
-const API_BASE = import.meta.env.DEV ? "" : "https://portfoliobackend-5mtm.onrender.com";
+const API_BASE = import.meta.env.DEV
+  ? ""
+  : "https://portfoliobackend-5mtm.onrender.com";
 
 export default function Projects() {
   const [projects, setProjects] = useState([]);
@@ -32,14 +34,11 @@ export default function Projects() {
         setProjects(res.data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error("Fetch error:", err);
-        setLoading(false);
-      });
+      .catch(() => setLoading(false));
   }, [category]);
 
   return (
-    <section id="projects" className="py-16 px-4 md:px-12 scroll-mt-20">
+    <section id="projects" className="py-16 px-4 md:px-12 scroll-mt-20 bg-gray-900 text-white">
       {/* Title */}
       <motion.h2
         className="text-3xl md:text-5xl font-bold mb-10 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
@@ -105,7 +104,11 @@ export default function Projects() {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
                   >
-                    <ProjectCard project={project} navigate={navigate} onLearnMore={setSelectedProject} />
+                    <ProjectCard
+                      project={project}
+                      navigate={navigate}
+                      onLearnMore={setSelectedProject}
+                    />
                   </motion.div>
                 </SwiperSlide>
               ))}
@@ -127,7 +130,11 @@ export default function Projects() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
-                <ProjectCard project={project} navigate={navigate} onLearnMore={setSelectedProject} />
+                <ProjectCard
+                  project={project}
+                  navigate={navigate}
+                  onLearnMore={setSelectedProject}
+                />
               </motion.div>
             ))}
           </div>
@@ -138,36 +145,42 @@ export default function Projects() {
       <AnimatePresence>
         {selectedProject && (
           <motion.div
-            className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-gray-900 rounded-xl max-w-3xl w-full p-6 relative"
-              initial={{ scale: 0.9, opacity: 0 }}
+              className="bg-gray-900 rounded-xl max-w-3xl w-full p-6 relative shadow-2xl"
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+              exit={{ scale: 0.95, opacity: 0 }}
             >
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-3 right-3 text-gray-400 hover:text-white text-lg"
+                className="absolute top-3 right-3 text-gray-400 hover:text-white text-2xl font-bold"
               >
                 ✕
               </button>
-              <h2 className="text-2xl font-bold text-white mb-4">{selectedProject.title}</h2>
+              <h2 className="text-2xl font-bold text-white mb-4">
+                {selectedProject.title}
+              </h2>
 
-              {/* Swiper in modal if multiple images */}
+              {/* Swiper for multiple images */}
               {selectedProject.additional_images?.length > 0 ? (
                 <Swiper
                   spaceBetween={10}
                   pagination={{ clickable: true }}
                   modules={[Pagination]}
-                  className="mb-4"
+                  className="mb-4 rounded-lg"
                 >
                   <SwiperSlide>
                     <img
-                      src={selectedProject.image?.startsWith("http") ? selectedProject.image : `${API_BASE}${selectedProject.image}`}
+                      src={
+                        selectedProject.image?.startsWith("http")
+                          ? selectedProject.image
+                          : `${API_BASE}${selectedProject.image}`
+                      }
                       alt={selectedProject.title}
                       className="w-full max-h-[500px] object-contain rounded-lg"
                     />
@@ -175,7 +188,11 @@ export default function Projects() {
                   {selectedProject.additional_images.map((img, idx) => (
                     <SwiperSlide key={idx}>
                       <img
-                        src={img.image?.startsWith("http") ? img.image : `${API_BASE}${img.image}`}
+                        src={
+                          img.image?.startsWith("http")
+                            ? img.image
+                            : `${API_BASE}${img.image}`
+                        }
                         alt={`${selectedProject.title} ${idx + 1}`}
                         className="w-full max-h-[500px] object-contain rounded-lg"
                       />
@@ -184,28 +201,49 @@ export default function Projects() {
                 </Swiper>
               ) : (
                 <img
-                  src={selectedProject.image?.startsWith("http") ? selectedProject.image : `${API_BASE}${selectedProject.image}`}
+                  src={
+                    selectedProject.image?.startsWith("http")
+                      ? selectedProject.image
+                      : `${API_BASE}${selectedProject.image}`
+                  }
                   alt={selectedProject.title}
                   className="w-full max-h-[500px] object-contain rounded-lg mb-4"
                 />
               )}
 
               <p className="text-gray-300 mb-4">{selectedProject.description}</p>
+
+              {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-4">
                 {selectedProject.tags?.split(",").map((tag) => (
-                  <span key={tag} className="bg-blue-600/20 text-blue-300 px-3 py-1 rounded-full text-xs font-semibold">
+                  <span
+                    key={tag}
+                    className="bg-blue-600/20 text-blue-300 px-3 py-1 rounded-full text-xs font-semibold"
+                  >
                     {tag.trim()}
                   </span>
                 ))}
               </div>
-              <div className="flex gap-5">
+
+              {/* Links */}
+              <div className="flex gap-5 flex-wrap">
                 {selectedProject.github_link && (
-                  <a href={selectedProject.github_link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-gray-300 hover:text-purple-400 transition">
+                  <a
+                    href={selectedProject.github_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-gray-300 hover:text-purple-400 transition"
+                  >
                     <FaGithub /> Code
                   </a>
                 )}
                 {selectedProject.live_link && (
-                  <a href={selectedProject.live_link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-gray-300 hover:text-green-400 transition">
+                  <a
+                    href={selectedProject.live_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-gray-300 hover:text-green-400 transition"
+                  >
                     <FaExternalLinkAlt /> Live
                   </a>
                 )}
@@ -219,13 +257,18 @@ export default function Projects() {
 }
 
 function ProjectCard({ project, navigate, onLearnMore }) {
-  const API_BASE = import.meta.env.DEV ? "" : "https://portfoliobackend-5mtm.onrender.com";
+  const API_BASE = import.meta.env.DEV
+    ? ""
+    : "https://portfoliobackend-5mtm.onrender.com";
   const isFullStack = project.category === "Full-Stack";
 
   return (
-    <div className="flex flex-col h-full group hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700">
+    <motion.div
+      className="flex flex-col h-full group rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900/90 to-gray-800/90 border border-gray-700 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
+      whileHover={{ scale: 1.03 }}
+    >
       {/* Image or Swiper */}
-      <div className="relative h-[200px] md:h-auto flex items-center justify-center bg-black overflow-hidden">
+      <div className="relative h-[220px] md:h-48 flex items-center justify-center bg-black overflow-hidden">
         {project.additional_images?.length > 0 ? (
           <Swiper
             spaceBetween={10}
@@ -236,7 +279,11 @@ function ProjectCard({ project, navigate, onLearnMore }) {
           >
             <SwiperSlide className="flex items-center justify-center">
               <img
-                src={project.image?.startsWith("http") ? project.image : `${API_BASE}${project.image}`}
+                src={
+                  project.image?.startsWith("http")
+                    ? project.image
+                    : `${API_BASE}${project.image}`
+                }
                 alt={project.title}
                 className="w-full h-full object-contain"
               />
@@ -253,7 +300,11 @@ function ProjectCard({ project, navigate, onLearnMore }) {
           </Swiper>
         ) : (
           <img
-            src={project.image?.startsWith("http") ? project.image : `${API_BASE}${project.image}`}
+            src={
+              project.image?.startsWith("http")
+                ? project.image
+                : `${API_BASE}${project.image}`
+            }
             alt={project.title}
             onError={(e) => (e.target.src = "/placeholder.png")}
             className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
@@ -313,6 +364,6 @@ function ProjectCard({ project, navigate, onLearnMore }) {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
