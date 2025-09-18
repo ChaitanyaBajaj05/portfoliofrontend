@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
+import { FaExternalLinkAlt, FaGithub, FaTimes } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -41,7 +41,7 @@ export default function Projects() {
     <section id="projects" className="py-16 px-4 md:px-12 scroll-mt-20 bg-gray-900 text-white">
       {/* Title */}
       <motion.h2
-        className="text-3xl md:text-5xl font-bold mb-10 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
+        className="text-3xl md:text-5xl font-bold mb-8 md:mb-12 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -49,12 +49,13 @@ export default function Projects() {
         My Projects
       </motion.h2>
 
-      {/* Mobile Dropdown */}
-      <div className="flex justify-center mb-8 md:hidden">
+      {/* Category Filter */}
+      <div className="flex justify-center mb-6 md:mb-12 flex-wrap gap-3">
+        {/* Mobile Dropdown */}
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="bg-gray-800/80 border border-blue-500 text-white text-sm rounded-full px-4 py-2 shadow-md backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+          className="bg-gray-800/80 border border-blue-500 text-white text-sm rounded-full px-4 py-2 shadow-md backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition md:hidden"
         >
           {categories.map((cat) => (
             <option key={cat.key || "All"} value={cat.key}>
@@ -62,23 +63,23 @@ export default function Projects() {
             </option>
           ))}
         </select>
-      </div>
 
-      {/* Desktop Category Buttons */}
-      <div className="hidden md:flex justify-center gap-4 mb-12 flex-wrap">
-        {categories.map((cat) => (
-          <button
-            key={cat.key || "All"}
-            onClick={() => setCategory(cat.key)}
-            className={`px-6 py-2 rounded-full text-sm font-medium transition-all shadow-sm ${
-              category === cat.key
-                ? "bg-blue-500 text-white shadow-lg"
-                : "bg-gray-800 text-gray-300 hover:bg-blue-600 hover:text-white"
-            }`}
-          >
-            {cat.label}
-          </button>
-        ))}
+        {/* Desktop Buttons */}
+        <div className="hidden md:flex gap-4">
+          {categories.map((cat) => (
+            <button
+              key={cat.key || "All"}
+              onClick={() => setCategory(cat.key)}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all shadow-sm ${
+                category === cat.key
+                  ? "bg-blue-500 text-white shadow-lg"
+                  : "bg-gray-800 text-gray-300 hover:bg-blue-600 hover:text-white"
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Content */}
@@ -151,18 +152,21 @@ export default function Projects() {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-gray-900 rounded-xl max-w-3xl w-full p-6 relative shadow-2xl"
+              className="bg-gray-900 rounded-xl max-w-3xl w-full p-6 relative shadow-2xl overflow-y-auto max-h-[90vh]"
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
             >
+              {/* Cross Icon */}
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-3 right-3 text-gray-400 hover:text-white text-2xl font-bold"
+                className="absolute top-3 right-3 md:top-4 md:right-4 text-gray-400 hover:text-white text-2xl md:text-3xl font-bold z-50"
               >
-                ✕
+                <FaTimes />
               </button>
-              <h2 className="text-2xl font-bold text-white mb-4">
+
+              {/* Title */}
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
                 {selectedProject.title}
               </h2>
 
@@ -211,6 +215,7 @@ export default function Projects() {
                 />
               )}
 
+              {/* Description */}
               <p className="text-gray-300 mb-4">{selectedProject.description}</p>
 
               {/* Tags */}
