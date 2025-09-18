@@ -24,6 +24,7 @@ export default function Projects() {
     { key: "Python", label: "Python" },
     { key: "Full-Stack", label: "Full-Stack" },
     { key: "Graphic Design", label: "Graphic" },
+    { key: "UI/UX", label: "UI/UX" },
   ];
 
   useEffect(() => {
@@ -232,7 +233,7 @@ export default function Projects() {
 
               {/* Links */}
               <div className="flex gap-5 flex-wrap">
-                {selectedProject.github_link && (
+                {selectedProject.github_link && selectedProject.category !== "UI/UX" && (
                   <a
                     href={selectedProject.github_link}
                     target="_blank"
@@ -242,7 +243,7 @@ export default function Projects() {
                     <FaGithub /> Code
                   </a>
                 )}
-                {selectedProject.live_link && (
+                {selectedProject.live_link && selectedProject.category !== "UI/UX" && (
                   <a
                     href={selectedProject.live_link}
                     target="_blank"
@@ -250,6 +251,16 @@ export default function Projects() {
                     className="inline-flex items-center gap-2 text-gray-300 hover:text-green-400 transition"
                   >
                     <FaExternalLinkAlt /> Live
+                  </a>
+                )}
+                {selectedProject.category === "UI/UX" && selectedProject.figma_link && (
+                  <a
+                    href={selectedProject.figma_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-gray-300 hover:text-purple-400 transition"
+                  >
+                    <FaExternalLinkAlt /> Figma
                   </a>
                 )}
               </div>
@@ -265,14 +276,13 @@ function ProjectCard({ project, navigate, onLearnMore }) {
   const API_BASE = import.meta.env.DEV
     ? ""
     : "https://portfoliobackend-5mtm.onrender.com";
+
   const isFullStack = project.category === "Full-Stack";
+  const isUIUX = project.category === "UI/UX";
 
   return (
-    <motion.div
-      className="flex flex-col h-full group rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900/90 to-gray-800/90 border border-gray-700 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
-      whileHover={{ scale: 1.03 }}
-    >
-      {/* Image or Swiper */}
+    <motion.div className="flex flex-col h-full group rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900/90 to-gray-800/90 border border-gray-700 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
+      {/* Image / Swiper */}
       <div className="relative h-[220px] md:h-48 flex items-center justify-center bg-black overflow-hidden">
         {project.additional_images?.length > 0 ? (
           <Swiper
@@ -339,7 +349,7 @@ function ProjectCard({ project, navigate, onLearnMore }) {
 
         {/* Buttons */}
         <div className="flex gap-3 mt-auto flex-wrap">
-          {project.github_link && (
+          {project.github_link && !isUIUX && (
             <a
               href={project.github_link}
               target="_blank"
@@ -349,18 +359,29 @@ function ProjectCard({ project, navigate, onLearnMore }) {
               <FaGithub /> Code
             </a>
           )}
-          {isFullStack && (
-            <button
-              onClick={() =>
-                project.live_link
-                  ? window.open(project.live_link, "_blank")
-                  : navigate("/maintenance")
-              }
+
+          {project.live_link && !isUIUX && (
+            <a
+              href={project.live_link}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-1 bg-green-600/20 hover:bg-green-600 text-green-300 text-xs px-3 py-1 rounded-full transition"
             >
               <FaExternalLinkAlt /> Live
-            </button>
+            </a>
           )}
+
+          {isUIUX && project.figma_link && (
+            <a
+              href={project.figma_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 bg-purple-600/20 hover:bg-purple-600 text-purple-300 text-xs px-3 py-1 rounded-full transition"
+            >
+              <FaExternalLinkAlt /> Figma
+            </a>
+          )}
+
           <button
             onClick={() => onLearnMore(project)}
             className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-xs px-4 py-1 rounded-full transition shadow-sm shadow-blue-500/30"
