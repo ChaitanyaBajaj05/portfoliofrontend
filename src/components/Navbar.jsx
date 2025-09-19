@@ -72,22 +72,15 @@ export default function Navbar() {
 
   return (
     <div className="overflow-x-hidden w-full">
-      {/* Desktop Navbar */}
+      {/* ✅ Desktop Navbar (Static Name) */}
       <nav className="hidden md:block fixed top-0 left-0 w-full z-50 bg-white/10 backdrop-blur-lg shadow-lg border-b border-white/10">
         <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
-          {/* Typing Logo */}
-          <motion.div whileHover={{ scale: 1.05 }} className="text-2xl font-extrabold tracking-wide">
-            <ReactTyped
-              strings={[
-                "Chaitanya Bajaj",
-                "A Full Stack Developer",
-                "Django + React Specialist",
-              ]}
-              typeSpeed={60}
-              backSpeed={30}
-              loop
-              className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent"
-            />
+          {/* Static Logo */}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent"
+          >
+            Chaitanya Bajaj
           </motion.div>
 
           {/* Links (Blogs included in desktop only) */}
@@ -133,7 +126,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Top Bar */}
+      {/* ✅ Mobile Top Bar (ReactTyped Logo) */}
       <nav className="md:hidden fixed top-0 w-full z-50 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800">
         <div className="flex justify-between items-center px-4 py-3">
           {/* Typing Logo */}
@@ -171,7 +164,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Bottom Navigation */}
+      {/* ✅ Mobile Bottom Navigation */}
       <nav
         className="
           md:hidden
