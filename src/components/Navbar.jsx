@@ -10,13 +10,14 @@ import {
   FaCertificate,
 } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { ReactTyped } from "react-typed"; // ✅ Correct import
 
+// Links except Blogs for bottom nav
 const navLinks = [
   { name: "Home", href: "#home", icon: FaHome },
   { name: "About", href: "#about", icon: FaUser },
   { name: "Certifications", href: "#certifications", icon: FaCertificate },
   { name: "Projects", href: "#projects", icon: FaFolderOpen },
-  { name: "Blogs", href: "/blog", icon: FaBlog },
   { name: "Contact", href: "#contact", icon: FaEnvelope },
 ];
 
@@ -57,9 +58,7 @@ const NavItem = memo(({ link, active, setActive }) => {
       />
       <span
         className={`text-xs transition-all duration-300 ${
-          active === link.name
-            ? "text-white font-semibold"
-            : "text-gray-400"
+          active === link.name ? "text-white font-semibold" : "text-gray-400"
         }`}
       >
         {link.name}
@@ -76,18 +75,24 @@ export default function Navbar() {
       {/* Desktop Navbar */}
       <nav className="hidden md:block fixed top-0 left-0 w-full z-50 bg-white/10 backdrop-blur-lg shadow-lg border-b border-white/10">
         <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
-          {/* Logo */}
-          <motion.a
-            href="/"
-            className="text-2xl font-extrabold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent tracking-wide"
-            whileHover={{ scale: 1.05 }}
-          >
-            CB
-          </motion.a>
+          {/* Typing Logo */}
+          <motion.div whileHover={{ scale: 1.05 }} className="text-2xl font-extrabold tracking-wide">
+            <ReactTyped
+              strings={[
+                "Chaitanya Bajaj",
+                "A Full Stack Developer",
+                "Django + React Specialist",
+              ]}
+              typeSpeed={60}
+              backSpeed={30}
+              loop
+              className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent"
+            />
+          </motion.div>
 
-          {/* Links */}
+          {/* Links (Blogs included in desktop only) */}
           <ul className="flex gap-8 text-lg font-medium">
-            {navLinks.map((link) => (
+            {navLinks.concat({ name: "Blogs", href: "/blog", icon: FaBlog }).map((link) => (
               <motion.li key={link.name} whileHover={{ scale: 1.05 }}>
                 <a
                   href={link.href}
@@ -130,13 +135,38 @@ export default function Navbar() {
 
       {/* Mobile Top Bar */}
       <nav className="md:hidden fixed top-0 w-full z-50 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800">
-        <div className="flex justify-center items-center px-6 py-4">
-          <motion.a
-            href="/"
-            className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent"
+        <div className="flex justify-between items-center px-4 py-3">
+          {/* Typing Logo */}
+          <motion.div
             whileHover={{ scale: 1.05 }}
+            className="text-sm sm:text-base font-bold tracking-wide max-w-[70%] overflow-hidden"
           >
-            CB
+            <ReactTyped
+              strings={[
+                "Chaitanya Bajaj",
+                "A Full Stack Developer",
+                "Django + React Specialist",
+              ]}
+              typeSpeed={50}
+              backSpeed={25}
+              loop
+              className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent"
+            />
+          </motion.div>
+
+          {/* Blog button on mobile top bar */}
+          <motion.a
+            href="/blog"
+            onClick={() => setActive("Blogs")}
+            className={`flex items-center gap-1 px-3 py-1.5 text-sm rounded-xl transition-colors ${
+              active === "Blogs"
+                ? "text-purple-400 border border-purple-400"
+                : "text-gray-300 hover:text-purple-300"
+            }`}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FaBlog className="text-lg" />
+            Blog
           </motion.a>
         </div>
       </nav>
@@ -167,7 +197,7 @@ export default function Navbar() {
             <NavItem key={link.name} link={link} active={active} setActive={setActive} />
           ))}
 
-          {/* Optional Animated Glow behind entire navbar */}
+          {/* Animated Glow Behind */}
           <motion.div
             className="absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-pink-500/10 pointer-events-none"
             animate={{ opacity: [0.2, 0.35, 0.2] }}

@@ -393,3 +393,4 @@ function ProjectCard({ project, navigate, onLearnMore }) {
     </motion.div>
   );
 }
+
